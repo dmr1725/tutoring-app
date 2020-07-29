@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('tutoring', 'root', '',{
-    host: 'localhost',
+const keys = require('./keys')
+const sequelize = new Sequelize(keys.DB, keys.USER, keys.PASSWORD,{
+    host: keys.HOST,
     dialect: 'mysql',
     pool: {
         max: 5,
