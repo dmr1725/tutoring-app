@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 import signInReducer from './signInReducer'
+import registerReducer from './registerReducer'
 import teacherCoursesReducer from './TeacherReducers/teacherCoursesReducer'
 import sendEmailReducer from './TeacherReducers/sendEmailReducer'
 import studentsPaidReducer from './TeacherReducers/studentsPaidReducer'
@@ -23,6 +24,7 @@ import confirmCodeReducer from './StudentReducer/confirmCodeReducer'
 
 const reducers = combineReducers({
     signInReducer,
+    registerReducer,
     teacherCoursesReducer,
     sendEmailReducer,
     studentsPaidReducer,

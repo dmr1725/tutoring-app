@@ -1,10 +1,31 @@
 import {SIGN_IN, TEACHER_COURSES, SEND_EMAIL, PAID_STUDENTS, NOT_PAID_STUDENTS, TODAY_TEACHER, STUDENTS_NOT_PRESENT, STUDENTS_PRESENT,
         ALL_STATS, CREATE_COURSE, EDIT_SPOTS, GET_NAME, COURSES_TO_ENROLL, ENROLL, MY_COURSES, NOT_PAID_MY_COURSE, PAY_COURSE,
-        TODAY_STUDENT, CHECK_PRESENCE, UPDATE_CODE, CONFIRM_CODE } from './types'
+        TODAY_STUDENT, CHECK_PRESENCE, UPDATE_CODE, CONFIRM_CODE, REGISTER } from './types'
 
 import axios from 'axios'
-const url = 'http://localhost:5000/api/user'
 
+export const register = (name, last_name, email, password, role)=>{
+    return async(dispatch)=>{
+        const response = await axios({
+            url: `/api/user/register`,
+            method: 'post', 
+            data: {
+                name,
+                last_name,
+                email,
+                password,
+                role
+            }
+        })
+
+        if(response.data.token){
+            sessionStorage.setItem('jwt', response.data.token)
+        }
+
+
+        dispatch({type: REGISTER, payload: response.data})
+    }
+}
 
 export const sign_in = (email, password)=>{
 
@@ -12,7 +33,7 @@ export const sign_in = (email, password)=>{
     // este inner function redux-thunk la llama automaticamente
     return async (dispatch)=>{
         
-        const response = await axios.post(`${url}/login`, {
+        const response = await axios.post(`/api/user/login`, {
            email: email,
            password: password
         })
@@ -32,7 +53,7 @@ export const findTeacherCourses = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/teacher/myCourses`, {
+        const response = await axios.get(`/api/user/teacher/myCourses`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -51,7 +72,7 @@ export const send_email_toStudents = (course_id, message)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/sendEmailToStudents`,
+            url: `/api/user/teacher/sendEmailToStudents`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -70,7 +91,7 @@ export const paid_students = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/studentsPaid`,
+            url: `/api/user/teacher/studentsPaid`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -89,7 +110,7 @@ export const not_paid_students = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/studentsNotPaid`,
+            url: `/api/user/teacher/studentsNotPaid`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -108,7 +129,7 @@ export const teacher_course_today = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/teacher/teachingToday`, {
+        const response = await axios.get(`/api/user/teacher/teachingToday`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -125,7 +146,7 @@ export const students_present = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/studentsPresent`,
+            url: `/api/user/teacher/studentsPresent`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -144,7 +165,7 @@ export const students_not_present = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/studentsNotPresent`,
+            url: `/api/user/teacher/studentsNotPresent`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -163,7 +184,7 @@ export const all_stats = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/classStats`,
+            url: `/api/user/teacher/classStats`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -183,7 +204,7 @@ export const create_course = (courseName, testNumber, spots, startDate, endDate)
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/createCourse`,
+            url: `/api/user/teacher/createCourse`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -206,7 +227,7 @@ export const edit_spots = (id, spots)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/teacher/updateSpots`,
+            url: `/api/user/teacher/updateSpots`,
             method: 'patch', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -225,7 +246,7 @@ export const getName = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/getName`, {
+        const response = await axios.get(`/api/user/getName`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -242,7 +263,7 @@ export const courses_to_enroll = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/student/findCoursesNotTaught`, {
+        const response = await axios.get(`/api/user/student/findCoursesNotTaught`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -259,7 +280,7 @@ export const enroll = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/student/enroll`,
+            url: `/api/user/student/enroll`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -278,7 +299,7 @@ export const my_courses = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/student/coursesEnrolled`, {
+        const response = await axios.get(`/api/user/student/coursesEnrolled`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -292,7 +313,7 @@ export const not_paid_courses = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/student/coursesNotPaid`, {
+        const response = await axios.get(`/api/user/student/coursesNotPaid`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -306,7 +327,7 @@ export const pay_course = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/student/paidCourse`,
+            url: `/api/user/student/paidCourse`,
             method: 'patch', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -325,7 +346,7 @@ export const course_today = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async (dispatch)=>{
        
-        const response = await axios.get(`${url}/student/courseToday`, {
+        const response = await axios.get(`/api/user/student/courseToday`, {
            headers: {
                Authorization: `Bearer ${token}`
            }
@@ -339,7 +360,7 @@ export const check_presence = (course_id)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/student/checkPresent`,
+            url: `/api/user/student/checkPresent`,
             method: 'post', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -358,7 +379,7 @@ export const update_code = ()=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/student/updateCode`,
+            url: `/api/user/student/updateCode`,
             method: 'patch', 
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -376,7 +397,7 @@ export const confirm_code = (course_id, code)=>{
     const token = sessionStorage.getItem('jwt')
     return async(dispatch)=>{
         const response = await axios({
-            url: `${url}/student/checkCodeUpdatePresent`,
+            url: `/api/user/student/checkCodeUpdatePresent`,
             method: 'patch', 
             headers: {
                 Authorization: `Bearer ${token}`,

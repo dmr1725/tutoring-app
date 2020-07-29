@@ -12,6 +12,9 @@ const Home = ()=>{
                 <Link to="/login" className="item">
                     Login
                 </Link> 
+                <Link to="/register" className="item">
+                    Register
+                </Link> 
             </div>
             <div className="ui message">
                 <div className="header">

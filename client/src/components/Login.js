@@ -33,17 +33,22 @@ const Login = ()=>{
 
     function redirectTo(){
         if(auth){
-            if(auth.message === 'logged in'){
-                if(auth.user.role === 'teacher'){
-                    return <Redirect to="/teacher/welcome"/>
-                }
-                else{
-                    return <Redirect to="/student/hello"/>
-                }
+            if(auth.message === 'Unable to log in'){
+                return <h1> {auth.message} </h1>
+            }
+        }
+
+        if(auth){
+            if(auth.user && auth.user.role === 'teacher'){
+                return <Redirect to="/teacher/welcome"/>
+            }
+            else{
+                return <Redirect to="/student/hello"/>
             }
         }
     }
-    console.log(auth)
+   
+    
     return (
         
         <div className="diego">

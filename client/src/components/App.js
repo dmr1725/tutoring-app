@@ -25,6 +25,7 @@ import Checkout from '../student/Checkout'
 import TodaySession from '../student/TodaySession'
 import UpdateCode from '../student/UpdateCode'
 import ConfirmCode from '../student/ConfirmCode'
+import Register from './Register'
 
 
 const App = ()=>{
@@ -40,6 +41,7 @@ const App = ()=>{
                   <Switch>
                      <Route path="/" exact component={Home}/>
                      <Route path="/login" exact component={Login}/>
+                     <Route path="/register" exact component={Register}/>
                      <TeacherRoute path="/teacher/welcome" exact component={Welcome}/>
                      <TeacherRoute path="/teacher/courses" exact component={CoursesTeaching}/>
                      <TeacherRoute path="/teacher/sendEmail/:id" exact component={SendEmail}/>
