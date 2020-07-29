@@ -10,11 +10,15 @@ const axios = require('axios')
 
 module.exports = (app)=>{
     /////////////////////////////////////////////////////////////
-    app.post('/api/register', async(req, res)=>{
+    app.post('/api/user/register', async(req, res)=>{
         const email = req.body.email
 
+        if(email === '' || req.body.name === '' || req.body.last_name === '' || req.body.password === '' || req.body.role === ''){
+            return res.send({message: 'You have to fill everything'})
+        }
+
         if(!validator.isEmail(email)){
-            return res.send('Your email is not valid').status(400)
+            return res.send({message: 'Your email is not valid'}).status(400)
         }
 
         const findEmail = await User.findOne({
@@ -24,7 +28,7 @@ module.exports = (app)=>{
         })
 
         if(findEmail){
-            return res.send('You have registered with this email').status(400)
+            return res.send({message: 'You have registered with this email'}).status(400)
         }
 
         const hashedPassword = await bcrypt.hash(req.body.password, 8)
