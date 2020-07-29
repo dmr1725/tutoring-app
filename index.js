@@ -18,6 +18,7 @@ app.get('/', (req,res)=>{
     res.send({message: 'hola'})
 })
 
+
 require('./routes/signInLogInRoutes')(app)
 require('./routes/teacherRoutes')(app)
 require('./routes/studentRoutes')(app)
@@ -39,9 +40,4 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, ()=>{
     console.log(`running the server on port ${PORT}`)
 })
-
-//https://tutoring-app-pr.herokuapp.com/
-//https://git.heroku.com/tutoring-app-pr.git
-// Created cleardb-rectangular-61290 as CLEARDB_DATABASE_URL
-// Use heroku addons:docs cleardb to view documentation
 
